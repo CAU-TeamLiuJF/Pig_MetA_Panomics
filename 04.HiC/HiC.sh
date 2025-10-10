@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# hicpro
 bowtie2-build genome.fa ./bowtie2_index/genome --threads 56
 digest_genome.py -r ^GATC -o genome.DpnII.bed genome.fa
 HiC-Pro --input ./rawdata --output hicpro_out --conf config-hicpro.txt
 
-# hicexplorer
-# Step.1 Convert format 
 hicConvertFormat \
     --matrices raw_or_iced_matrix.h5 \
     --bedFileHicpro raw.bed \
@@ -14,13 +11,11 @@ hicConvertFormat \
     --outputFormat h5 \
     --outFileName converted_matrix.h5
 
-# Step.2 Correct ICE / filter bins
 hicCorrectMatrix correct \
     -m iced_matrix.h5 \
     --filterThreshold -1.5 5 \
     -o corrected_matrix.h5
 
-# Step.3  Plot contact matrix
 hicPlotMatrix \
     -m corrected_matrix.h5 \
     -o matrix_plot.pdf \
@@ -28,13 +23,11 @@ hicPlotMatrix \
     --clearMaskedBins \
     --region chr:start-end
 
-# Step.4  PCA / compartment analysis
 hicPCA \
     -m corrected_matrix.h5 \
     --numberOfEigenvectors 2 \
     --outputFileName pca1.bw pca2.bw
 
-# Step.5 TAD detection
 hicFindTADs \
     -m pearson_matrix.h5 \
     --outPrefix TADs_output_prefix \

@@ -1,9 +1,5 @@
 #!/bin/bash
 
-### homology-based annotation pipeline
-
-# gemoma
-# GeMoMa homology-based gene prediction pipeline
 java -Xms256G -Xmx256G -jar GeMoMa-1.9.jar \
   CLI GeMoMaPipeline \
   threads=110 \
@@ -24,10 +20,5 @@ java -Xms256G -Xmx256G -jar GeMoMa-1.9.jar \
   ERE.m=rnaseq.bam \
   ERE.c=true
 
-# miniprot 
-# Miniprot protein-to-genome alignment pipeline
 miniprot -t 16 --gff genome.fa proteins.fa > miniprot.gff3
-grep -v ^# miniprot.gff3 > miniprot.clean.gff3
 miniprot_GFF_2_EVM_GFF3.py miniprot.gff3 > miniprot.evm.gff3
-gffread miniprot.clean.gff3 -g genome.fa -x miniprot.cds.fa -y miniprot.pep.fa
-

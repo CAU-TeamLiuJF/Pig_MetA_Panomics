@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# index1
 STAR \
     --runMode genomeGenerate \
     --genomeDir genome_index_dir \
@@ -9,7 +8,6 @@ STAR \
     --limitGenomeGenerateRAM 240000000000 \
     --runThreadN 80
 
-# mapping_1st
 STAR \
     --genomeDir genome_index_dir \
     --readFilesIn sample_1.fq.gz sample_2.fq.gz \
@@ -48,7 +46,6 @@ STAR \
     --outFilterMismatchNoverReadLmax 1 \
     --alignSJstitchMismatchNmax 0 0 0 0
 
-# index2
 STAR \
     --runMode genomeGenerate \
     --genomeDir genome_index_dir_round2 \
@@ -58,8 +55,6 @@ STAR \
     --sjdbFileChrStartEnd sj_all.txt \
     --runThreadN 120
 
-
-# mapping_2nd
 STAR \
     --runThreadN 120 \
     --genomeDir genome_index_dir_round2 \

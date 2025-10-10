@@ -1,8 +1,5 @@
 #!/bin/bash
 
-### Hi-C scaffolding
-
-# novoalign
 cd novoalign
 novoindex genome_hic.hic.p_ctg.fa.ndx  genome_hic.hic.p_ctg.fa -t 110
 
@@ -14,7 +11,6 @@ source activate HiC-Pro
 bedtools intersect -abam hic_1.bam -b genome_mbol.bed > genome_1.REduced.bam
 bedtools intersect -abam hic_2.bam -b genome_mbol.bed > genome_2.REduced.bam
 
-# extractuniq reads
 python extractuniq.py genome_1.REduced.bam genome_1.REduced.uniq.bam
 python extractuniq.py genome_2.REduced.bam genome_2.REduced.uniq.bam
 
@@ -49,21 +45,9 @@ samtools view -@110 -b genome_2.REduced.uniq.pair.sort.rm.sam > genome_2.REduced
 
 mergeSAM.py -f genome_1.REduced.uniq.pair.sort.rm.bam -r genome_2.REduced.uniq.pair.sort.rm.bam -o genome.REduced.uniq.pair.sort.rm.bam -q 0 -t -v
  
-# samblaster
-# filter pcr&secondary and supplementary alignments
 samtools view -h genome.REduced.uniq.pair.sort.rm.bam|samblaster | samtools view - -@ 110 -S -h -b -F 3340 -o genome.REduced.uniq.pair.sort.rm.filter.bam
 
 filter_bam genome.REduced.uniq.pair.sort.rm.filter.bam 1 --nm 3 --threads 110 | samtools view - -b -@ 110 -o genome.REduced.uniq.pair.sort.rm.filter.final.bam
 
-haphic pipeline  --correct_nrounds 2 --max_inflation 5 --bin_size 500 HNHNN_k57w57_hic.hic.p_ctg.fa genome.REduced.uniq.pair.sort.rm.filter.final.bam 20
-
-# salsa
-bedtools bamtobed -i hic/DQ/01.novobam/DQ_LG_new.REduced.ctuniq.merge.bam > alignment.bed
-sort -k 4 alignment.bed > alignment.sort.bed
-time /public3/home/wangzn/Software/Common/Anaconda2/bin/python /public3/home/wangzn/Software/Hi-C/SALSA-2.3/run_pipeline.py -a /public3/home/wangzn/sunling/hic/ADL/test9/utg_hicpro/genome/test15_default_utg.fa -b alignment.sort.bed -i 6 -m yes -p yes -o salsaTest1 -e 
-GATC -l /public3/home/wangzn/sunling/hic/ADL/test9/utg_hicpro/genome/test15_default_utg.fa.fai
-
-# to juicebox
-agp2assembly.py salsaTest2/scaffolds_FINAL.agp salsaTest2/scaffolds_FINAL.assembly
-run-assembly-visualizer.sh -p false salsaTest2/scaffolds_FINAL.assembly ./juicerbox/out.sorted.links.txt
+haphic pipeline  --correct_nrounds 2 --max_inflation 5 --bin_size 500 genome_hic.hic.p_ctg.fa genome.REduced.uniq.pair.sort.rm.filter.final.bam 20
 

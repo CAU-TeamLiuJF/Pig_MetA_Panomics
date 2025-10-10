@@ -1,17 +1,14 @@
 #!/bin/bash
 
-# bowtie2_hnhnn
-# Alignment
 for i in 1 2 3 "in"
 do
   bowtie2 -p 32 --very-sensitive --no-mixed --no-discordant -k 10 \
-    -x 04.hnhnn.v1.fa \
+    -x hnhnn.fa \
     -1 sample_${i}_clean_1.fastq.gz \
     -2 sample_${i}_clean_2.fastq.gz \
   | samtools sort -O bam -@ 32 -o sample.hnhnn_${i}.bam
 done
 
-# Post-processing
 for i in 1 2 3 "in"
 do
   picard MarkDuplicates \
@@ -29,18 +26,15 @@ do
     --binSize 5 -p 32
 done
 
-# bowtie2_self
-# Alignment
 for i in 1 2 3 "in"
 do
   bowtie2 -p 32 --very-sensitive --no-mixed --no-discordant -k 10 \
-    -x 17.sample.v1.fa \
+    -x sample.fa \
     -1 sample_${i}_clean_1.fastq.gz \
     -2 sample_${i}_clean_2.fastq.gz \
   | samtools sort -O bam -@ 32 -o sample.sample_${i}.bam
 done
 
-# Post-processing
 for i in 1 2 3 "in"
 do
   picard MarkDuplicates \
@@ -58,7 +52,6 @@ do
     --binSize 5 -p 32
 done
 
-## call peak
 macs3 callpeak \
   -t sample_1.bam sample_2.bam sample_3.bam \
   -c sample_in.bam \
@@ -67,3 +60,10 @@ macs3 callpeak \
   -B -q 0.05 \
   -n sample
 
+macs3 bdgcmp 
+  -t sample_treat_pileup.bdg \
+  -c sample_control_lambda.bdg \
+  --outdir ./ \
+  -o sample_logFE.bdg \
+  -m logFE \
+  -p 0.00001
