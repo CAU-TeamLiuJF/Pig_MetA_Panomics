@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# hicpro
 bowtie2-build genome.fa ./bowtie2_index/genome --threads 56
 digest_genome.py -r ^GATC -o genome.DpnII.bed genome.fa
 HiC-Pro --input ./rawdata --output hicpro_out --conf config-hicpro.txt
 
+# hicexplorer
 hicConvertFormat \
     --matrices raw_or_iced_matrix.h5 \
     --bedFileHicpro raw.bed \

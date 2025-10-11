@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# gemoma
 java -Xms256G -Xmx256G -jar GeMoMa-1.9.jar \
   CLI GeMoMaPipeline \
   threads=110 \
@@ -20,5 +21,6 @@ java -Xms256G -Xmx256G -jar GeMoMa-1.9.jar \
   ERE.m=rnaseq.bam \
   ERE.c=true
 
+# miniprot
 miniprot -t 16 --gff genome.fa proteins.fa > miniprot.gff3
 miniprot_GFF_2_EVM_GFF3.py miniprot.gff3 > miniprot.evm.gff3

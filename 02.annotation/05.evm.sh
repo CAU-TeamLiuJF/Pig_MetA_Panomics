@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# EVM
 EVidenceModeler \
   --weights weights.txt \
   --sample_id sample \
@@ -10,6 +11,7 @@ EVidenceModeler \
   --segmentSize 950000 \
   --overlapSize 100000
 
+# pasa update
 Launch_PASA_pipeline.pl \
   --CPU 4 \
   -c annotCompare.config \

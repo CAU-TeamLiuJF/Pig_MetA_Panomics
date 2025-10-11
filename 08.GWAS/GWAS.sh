@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### GWAS, Taking SNP as an example
+# GWAS, Taking SNP as an example
 
 gmatrix --bfile SNPcleanuseful --grm agrm --out G
 uvlmm --bfile SNPcleanuseful --data data.txt \

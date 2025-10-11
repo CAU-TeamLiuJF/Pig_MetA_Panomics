@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# bowtie2_hnhnn
 for i in 1 2 3 "in"
 do
   bowtie2 -p 32 --very-sensitive --no-mixed --no-discordant -k 10 \
@@ -26,6 +27,7 @@ do
     --binSize 5 -p 32
 done
 
+# bowtie2_self
 for i in 1 2 3 "in"
 do
   bowtie2 -p 32 --very-sensitive --no-mixed --no-discordant -k 10 \
@@ -52,6 +54,7 @@ do
     --binSize 5 -p 32
 done
 
+# call peak
 macs3 callpeak \
   -t sample_1.bam sample_2.bam sample_3.bam \
   -c sample_in.bam \

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# novoalign
 cd novoalign
 novoindex genome_hic.hic.p_ctg.fa.ndx  genome_hic.hic.p_ctg.fa -t 110
 
@@ -44,7 +45,8 @@ samtools view -@110 -b genome_1.REduced.uniq.pair.sort.rm.sam > genome_1.REduced
 samtools view -@110 -b genome_2.REduced.uniq.pair.sort.rm.sam > genome_2.REduced.uniq.pair.sort.rm.bam
 
 mergeSAM.py -f genome_1.REduced.uniq.pair.sort.rm.bam -r genome_2.REduced.uniq.pair.sort.rm.bam -o genome.REduced.uniq.pair.sort.rm.bam -q 0 -t -v
- 
+
+# samblaster
 samtools view -h genome.REduced.uniq.pair.sort.rm.bam|samblaster | samtools view - -@ 110 -S -h -b -F 3340 -o genome.REduced.uniq.pair.sort.rm.filter.bam
 
 filter_bam genome.REduced.uniq.pair.sort.rm.filter.bam 1 --nm 3 --threads 110 | samtools view - -b -@ 110 -o genome.REduced.uniq.pair.sort.rm.filter.final.bam

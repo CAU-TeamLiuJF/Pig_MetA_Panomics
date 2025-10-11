@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### Heritability estimates, Taking SNP as an example
+# Heritability estimates, Taking SNP as an example
 
 ldak --bfile SNPclean --allow-multi YES --cut-weights snp --window-prune 0.98 --section-length 100
 ldak --bfile SNPclean --allow-multi YES --calc-weights-all snp

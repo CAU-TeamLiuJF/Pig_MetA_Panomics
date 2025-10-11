@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# RNA-seq
 hisat2-build -p 16 genome.fa genome
 
 hisat2 --dta -p 16 -x genome \
@@ -25,6 +26,7 @@ Trinity --genome_guided_bam merged.bam \
   --CPU 110 \
   --output trinity.gg
 
+# Iso-Seq
 ccs sample.subreads.bam sample.ccs.bam \
   -j 16 --minPasses 1 --min-rq 0.9
 
@@ -50,10 +52,10 @@ collapse_isoforms_by_sam.py \
   -c 0.95 -i 0.99 \
   --dun-merge-5-shorter \
   -o cupcake
-gffread cupcake.collapsed.gff -T -o cupcake.collapsed.gtf
 
-cat Trinity_1.fasta Trinity_2.fasta Iso.fasta > transcripts.fasta
+cat Trinity_no_ref.fasta trinity_gg.fasta Iso.fasta > transcripts.fasta
 
+# pasa
 accession_extractor.pl transcripts.fasta > tdn.accs
 seqclean transcripts.fasta -v /path/to/UniVec
 Launch_PASA_pipeline.pl \

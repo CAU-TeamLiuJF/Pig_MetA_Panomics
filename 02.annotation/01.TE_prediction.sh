@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# RepeatModeler + RepeatMasker
+
 BuildDatabase -name genome genome.fa
 RepeatModeler -database genome -threads 110
 
